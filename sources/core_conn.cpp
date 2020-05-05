@@ -1195,6 +1195,9 @@ void access_token_set_func::func( _In_ connection_option const* option, _In_ zva
 
     core::SQLSetConnectAttr(conn, SQL_COPT_SS_ACCESS_TOKEN, reinterpret_cast<SQLPOINTER>(pAccToken), SQL_IS_POINTER);
 
+    // enable async
+	core::SQLSetConnectAttr(conn, SQL_ATTR_ASYNC_ENABLE,  SQL_ASYNC_ENABLE_ON, SQL_IS_INTEGER);
+
     // Save the pointer because SQLDriverConnect() will use it to make connection to the server
     conn->azure_ad_access_token = pAccToken;
     accToken.transferred();
