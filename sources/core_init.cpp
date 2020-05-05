@@ -61,6 +61,10 @@ void core_sqlsrv_minit( _Outptr_ sqlsrv_context** henv_cp, _Inout_ sqlsrv_contex
     core::SQLSetEnvAttr( **henv_ncp, SQL_ATTR_ODBC_VERSION, reinterpret_cast<SQLPOINTER>( SQL_OV_ODBC3 ), SQL_IS_INTEGER
                          TSRMLS_CC );
 
+	// enable async by default
+    core::SQLSetEnvAttr( **henv_ncp,SQL_ATTR_ASYNC_ENABLE, reinterpret_cast<SQLPOINTER>(SQL_ASYNC_ENABLE_ON), SQL_IS_INTEGER
+    					TSRMLS_CC);
+
     // disable connection pooling
     core::SQLSetEnvAttr( **henv_ncp, SQL_ATTR_CONNECTION_POOLING, reinterpret_cast<SQLPOINTER>( SQL_CP_OFF ),
                          SQL_IS_UINTEGER TSRMLS_CC );

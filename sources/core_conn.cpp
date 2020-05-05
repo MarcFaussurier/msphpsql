@@ -20,12 +20,12 @@
 #include "core_sqlsrv.h"
 
 #include <php.h>
-
 #include <sstream>
 #include <vector>
 
 #include <sys/utsname.h>
 #include <odbcinst.h>
+#include <stdlib.h>     /* abs */
 
 // *** internal variables and constants ***
 
@@ -1147,6 +1147,7 @@ size_t core_str_zval_is_true( _Inout_ zval* value_z )
     return 0; // false
 }
 
+
 void access_token_set_func::func( _In_ connection_option const* option, _In_ zval* value, _Inout_ sqlsrv_conn* conn, _Inout_ std::string& conn_str TSRMLS_DC )
 {
     SQLSRV_ASSERT(Z_TYPE_P(value) == IS_STRING, "An access token must be a byte string.");
@@ -1193,10 +1194,7 @@ void access_token_set_func::func( _In_ connection_option const* option, _In_ zva
         pAccToken->data[i+1] = 0;
     }
 
-    core::SQLSetConnectAttr(conn, SQL_COPT_SS_ACCESS_TOKEN, reinterpret_cast<SQLPOINTER>(pAccToken), SQL_IS_POINTER);
-
-    // enable async
-	core::SQLSetConnectAttr(conn, SQL_ATTR_ASYNC_ENABLE,  SQL_ASYNC_ENABLE_ON, SQL_IS_INTEGER);
+    core::SQLSetConnectAttr(conn, (int) SQL_COPT_SS_ACCESS_TOKEN, reinterpret_cast<SQLPOINTER>(pAccToken), SQL_IS_POINTER);
 
     // Save the pointer because SQLDriverConnect() will use it to make connection to the server
     conn->azure_ad_access_token = pAccToken;
