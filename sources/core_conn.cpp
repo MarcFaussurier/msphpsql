@@ -226,6 +226,7 @@ sqlsrv_conn* core_sqlsrv_connect( _In_ sqlsrv_context& henv_cp, _In_ sqlsrv_cont
 
     conn_str.clear();
     sqlsrv_conn* return_conn = conn;
+    core::SQLSetConnectAttr(return_conn, SQL_ATTR_ASYNC_ENABLE,  reinterpret_cast<SQLPOINTER>(SQL_ASYNC_ENABLE_ON), SQL_IS_INTEGER);
     conn.transferred();
 
     return return_conn;
